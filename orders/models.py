@@ -1,12 +1,30 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+
 class Order(models.Model):
-    customer_name = models.CharField(_("اسم العميل"), max_length=255)
-    phone = models.CharField(_("رقم الجوال"), max_length=20)
-    address = models.CharField(_("العنوان"), max_length=255)
-    total_price = models.DecimalField(_("إجمالي السعر"), max_digits=10, decimal_places=2)
-    created_at = models.DateTimeField(_("تاريخ الإنشاء"), auto_now_add=True)
+    customer_name = models.CharField(
+        _("اسم العميل"),
+        max_length=255
+    )
+    phone = models.CharField(
+        _("رقم الجوال"),
+        max_length=20
+    )
+    address = models.CharField(
+        _("العنوان"),
+        max_length=255
+    )
+    total_price = models.DecimalField(
+        _("إجمالي السعر"),
+        max_digits=10,
+        decimal_places=2
+    )
+    created_at = models.DateTimeField(
+        _("تاريخ الإنشاء"),
+        auto_now_add=True
+    )
+    
     status = models.CharField(
         _("حالة الطلب"),
         max_length=50,
@@ -16,7 +34,7 @@ class Order(models.Model):
             ("delivered", _("تم التسليم")),
             ("canceled", _("ملغي")),
         ],
-        default="pending",
+        default="pending"
     )
 
     class Meta:

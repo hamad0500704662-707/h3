@@ -1,17 +1,58 @@
 from django.db import models
+from django.contrib.auth.models import User
+from django.utils.translation import gettext_lazy as _
 
 
-class Product(models.Model):
-    name = models.CharField(max_length=200)
-    description = models.TextField(blank=True, null=True)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    image = models.ImageField(upload_to="products/", blank=True, null=True)
-    stock = models.PositiveIntegerField(default=0)
-    created_at = models.DateTimeField(auto_now_add=True)
+class Customer(models.Model):
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        related_name="customer",
+        verbose_name=_("الحساب")
+    )
+    phone = models.CharField(
+        max_length=20,
+        blank=True,
+        null=True,
+        verbose_name=_("رقم الجوال")
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name=_("تاريخ الإنشاء")
+    )
 
     class Meta:
-        verbose_name = "منتج"
-        verbose_name_plural = "المنتجات"
+        verbose_name = _("عميل")
+        verbose_name_plural = _("العملاء")
 
     def __str__(self):
-        return self.name
+        return self.user.username
+
+
+class Address(models.Model):
+    customer = models.ForeignKey(
+        Customer,
+        on_delete=models.CASCADE,
+        related_name="addresses",
+        verbose_name=_("العميل")
+    )
+    city = models.CharField(
+        max_length=100,
+        verbose_name=_("المدينة")
+    )
+    district = models.CharField(
+        max_length=100,
+        verbose_name=_("الحي")
+    )
+    details = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name=_("تفاصيل العنوان")
+    )
+
+    class Meta:
+        verbose_name = _("عنوان")
+        verbose_name_plural = _("عناوين العملاء")
+
+    def __str__(self):
+        return f"{self.city} - {self.district}"
