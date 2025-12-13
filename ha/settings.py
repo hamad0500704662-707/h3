@@ -7,7 +7,6 @@ SECRET_KEY = 'django-insecure-((nwr1%i8hd#v=$+t_vh#b6m=^62bb%@3*&ojrlx_pjke8b5i!
 DEBUG = True
 ALLOWED_HOSTS = []
 
-
 INSTALLED_APPS = [
     # تطبيقات Django الأساسية
     'django.contrib.admin',
@@ -20,10 +19,11 @@ INSTALLED_APPS = [
     # -----------------------------
     # 🔵 التطبيقات الثلاثة المختارة
     # -----------------------------
-    'accounts',
-    'products',
-    'orders',
+    'accounts.apps.AccountsConfig',
+    'products.apps.ProductsConfig',
+    'orders.apps.OrdersConfig',
 ]
+
 
 
 MIDDLEWARE = [
