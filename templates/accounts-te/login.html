@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>تسجيل الدخول</title>
+
+    <style>
+        body { direction: rtl; font-family: Tahoma; padding: 30px; background: #f0f0f0; }
+        .box {
+            width: 350px; margin: auto; padding: 20px;
+            background: white; border-radius: 10px;
+            border: 2px solid #d4a017;
+        }
+        input {
+            width: 100%; padding: 10px; margin-top: 10px;
+            border-radius: 5px; border: 1px solid #aaa;
+        }
+        button {
+            width: 100%; padding: 10px; margin-top: 15px;
+            background: #000; color: white;
+            border: none; border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover { background: #d4a017; }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <h2>تسجيل الدخول</h2>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <label>اسم المستخدم</label>
+            <input type="text" name="username" required>
+
+            <label>كلمة المرور</label>
+            <input type="password" name="password" required>
+
+            <button type="submit">دخول</button>
+        </form>
+    </div>
+</body>
+</html>

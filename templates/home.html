@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            margin: 0;
+            direction: rtl;
+            background-color: #ffffff;
+            font-family: 'Tahoma', sans-serif;
+        }
+
+        .hero {
+            background-color: #f4f4f4;
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            color: #000;
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            color: #555;
+            font-size: 18px;
+        }
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            padding: 40px;
+        }
+
+        .product-card {
+            background-color: #fff;
+            border: 2px solid #d4a017; /* ذهبي */
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+
+        .product-card:hover {
+            background-color: #000;
+            color: #fff;
+        }
+
+        .product-card img {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- استدعاء الشريط العلوي -->
+{% include 'header.html' %}
+
+<div class="hero">
+    <h1>مرحبًا بك في متجر الزي الأنيق</h1>
+    <p>أفضل الأزياء — أفضل الأسعار — أفضل الجودة</p>
+</div>
+
+
+<div class="products">
+    <div class="product-card">
+        <img src="https://via.placeholder.com/300" alt="منتج">
+        <h3>قميص كلاسيكي</h3>
+        <p>120 ريال</p>
+    </div>
+
+    <div class="product-card">
+        <img src="https://via.placeholder.com/300" alt="منتج">
+        <h3>بنطال رجالي</h3>
+        <p>90 ريال</p>
+    </div>
+
+    <div class="product-card">
+        <img src="https://via.placeholder.com/300" alt="منتج">
+        <h3>جاكيت شتوي</h3>
+        <p>250 ريال</p>
+    </div>
+</div>
+
+<!-- استدعاء الشريط السفلي -->
+{% include 'footer.html' %}
+
+</body>
+</html>
