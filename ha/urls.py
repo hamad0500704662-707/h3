@@ -2,29 +2,29 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from django.views.generic import TemplateView
 
+# استدعاء الصفحة الرئيسية من products
+from products.views import home
 
 urlpatterns = [
 
     # ===============================
-    # 🔵 لوحة التحكم Django Admin
+    # 🔵 لوحة التحكم (Django Admin)
     # ===============================
     path('admin/', admin.site.urls),
 
     # ===============================
     # 🔵 الصفحة الرئيسية (Home)
     # ===============================
-    path('', TemplateView.as_view(template_name="home.html"), name='home'),
+    path('', home, name='home'),
 
     # ===============================
-    # 🔵 روابط التطبيقات (URL Includes)
+    # 🔵 روابط التطبيقات (Accounts / Products / Orders)
     # ===============================
     path('accounts/', include('accounts.urls')),
     path('products/', include('products.urls')),
     path('orders/', include('orders.urls')),
 ]
-
 
 # ===============================
 # 🔵 دعم ملفات Media & Static أثناء التطوير
@@ -32,7 +32,13 @@ urlpatterns = [
 if settings.DEBUG:
 
     # ملفات Media (الصور / الملفات المرفوعة)
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(
+        settings.MEDIA_URL,
+        document_root=settings.MEDIA_ROOT
+    )
 
     # ملفات Static (CSS / JS / صور ثابتة)
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(
+        settings.STATIC_URL,
+        document_root=settings.STATIC_ROOT
+    )

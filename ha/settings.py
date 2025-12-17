@@ -1,14 +1,19 @@
 from pathlib import Path
+from dotenv import load_dotenv
+import os
+
+# تحميل ملف .env
+load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # -----------------------------
-# 🔐 مفتاح التشفير
+# 🔐 القيم السرية من ملف .env
 # -----------------------------
-SECRET_KEY = 'django-insecure-((nwr1%i8hd#v=$+t_vh#b6m=^62bb%@3*&ojrlx_pjke8b5i!'
-DEBUG = True
-ALLOWED_HOSTS = []
+SECRET_KEY = os.getenv("SECRET_KEY")
+DEBUG = os.getenv("DEBUG") == "True"
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
 
 
 # -----------------------------
@@ -23,7 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # 🔵 التطبيقات الخاصة بك
+    # Apps الخاصة بك
     'accounts.apps.AccountsConfig',
     'products.apps.ProductsConfig',
     'orders.apps.OrdersConfig',
@@ -31,7 +36,7 @@ INSTALLED_APPS = [
 
 
 # -----------------------------
-# 🔵 وسطيات Django
+# 🔵 Middleware
 # -----------------------------
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -45,21 +50,18 @@ MIDDLEWARE = [
 
 
 # -----------------------------
-# 🔵 ضبط الـ URLs
+# 🔵 ROOT URLs
 # -----------------------------
 ROOT_URLCONF = 'ha.urls'
 
 
 # -----------------------------
-# 🔵 نظام القوالب Templates
+# 🔵 Templates
 # -----------------------------
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-
-        # 📌 تعريف مجلد templates الرئيسي
         'DIRS': [BASE_DIR / "templates"],
-
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -67,6 +69,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
             ],
         },
     },
@@ -80,12 +83,16 @@ WSGI_APPLICATION = 'ha.wsgi.application'
 
 
 # -----------------------------
-# 🔵 قاعدة البيانات
+# 🔵 قاعدة البيانات — PostgreSQL عبر env
 # -----------------------------
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': os.getenv("DB_ENGINE", "django.db.backends.sqlite3"),
+        'NAME': os.getenv("DB_NAME", BASE_DIR / "db.sqlite3"),
+        'USER': os.getenv("DB_USER", ""),
+        'PASSWORD': os.getenv("DB_PASSWORD", ""),
+        'HOST': os.getenv("DB_HOST", ""),
+        'PORT': os.getenv("DB_PORT", ""),
     }
 }
 
@@ -116,12 +123,10 @@ USE_TZ = True
 # -----------------------------
 STATIC_URL = '/static/'
 
-# مجلد static داخل المشروع
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
-# مجلد التجميع collectstatic
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 

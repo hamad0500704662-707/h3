@@ -1,30 +1,16 @@
 from django.db import models
-from django.utils.translation import gettext_lazy as _
-
 
 class Product(models.Model):
-    name = models.CharField(
-        _("اسم المنتج"),
-        max_length=255
-    )
-    price = models.DecimalField(
-        _("السعر"),
-        max_digits=10,
-        decimal_places=2
-    )
-    description = models.TextField(
-        _("الوصف"),
-        blank=True,
-        null=True
-    )
-    created_at = models.DateTimeField(
-        _("تاريخ الإضافة"),
-        auto_now_add=True
-    )
+    name = models.CharField(max_length=200, verbose_name="اسم المنتج")
+    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="السعر")
+    stock = models.IntegerField(default=0, verbose_name="الكمية المتوفرة")
+    description = models.TextField(blank=True, null=True, verbose_name="الوصف")
+    image = models.ImageField(upload_to='products/', blank=True, null=True, verbose_name="الصورة")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="تاريخ الإضافة")
 
     class Meta:
-        verbose_name = _("منتج")
-        verbose_name_plural = _("المنتجات")
+        verbose_name = "منتج"
+        verbose_name_plural = "المنتجات"
 
     def __str__(self):
         return self.name
