@@ -1,6 +1,9 @@
 from pathlib import Path
 from dotenv import load_dotenv
 import os
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 # تحميل ملف .env
 load_dotenv()
@@ -30,6 +33,10 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'products.apps.ProductsConfig',
     'orders.apps.OrdersConfig',
+
+    # Cloudinary
+    'cloudinary',
+    'cloudinary_storage',
 ]
 
 # -----------------------------
@@ -79,7 +86,6 @@ WSGI_APPLICATION = 'ha.wsgi.application'
 # 🔵 قاعدة البيانات — SQLite للتطوير و PostgreSQL للإنتاج
 # -----------------------------
 if DEBUG:
-    # 🟦 تطوير — SQLite
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -87,15 +93,14 @@ if DEBUG:
         }
     }
 else:
-    # 🟩 إنتاج — PostgreSQL (Render)
     DATABASES = {
         'default': {
-            'ENGINE': os.getenv("DB_ENGINE", "django.db.backends.postgresql"),
+            'ENGINE': os.getenv("DB_ENGINE"),
             'NAME': os.getenv("DB_NAME"),
             'USER': os.getenv("DB_USER"),
             'PASSWORD': os.getenv("DB_PASSWORD"),
             'HOST': os.getenv("DB_HOST"),
-            'PORT': os.getenv("DB_PORT", "5432"),
+            'PORT': os.getenv("DB_PORT"),
         }
     }
 
@@ -122,13 +127,21 @@ USE_TZ = True
 # 🔵 الملفات الثابتة Static Files
 # -----------------------------
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
+STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # -----------------------------
-# 🔵 ملفات الميديا Media Files
+# 🌩 Cloudinary Config
 # -----------------------------
+cloudinary.config(
+    cloud_name=os.getenv("CLOUD_NAME"),
+    api_key=os.getenv("API_KEY"),
+    api_secret=os.getenv("API_SECRET"),
+    secure=True
+)
+
+# -----------------------------
+# 📦 Media Files — Cloudinary Storage
+# -----------------------------
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / "media"
