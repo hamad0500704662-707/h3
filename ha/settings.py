@@ -7,19 +7,18 @@ load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# ------------------------------------------------
+# -----------------------------
 # 🔐 القيم السرية من ملف .env
-# ------------------------------------------------
+# -----------------------------
 SECRET_KEY = os.getenv("SECRET_KEY")
-DEBUG = os.getenv("DEBUG", "False") == "True"
+DEBUG = os.getenv("DEBUG", "True") == "True"
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
 
-
-# ------------------------------------------------
+# -----------------------------
 # 🔵 التطبيقات
-# ------------------------------------------------
+# -----------------------------
 INSTALLED_APPS = [
+    # Django Apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -27,15 +26,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # Apps الخاصة بك
     'accounts.apps.AccountsConfig',
     'products.apps.ProductsConfig',
     'orders.apps.OrdersConfig',
 ]
 
-
-# ------------------------------------------------
+# -----------------------------
 # 🔵 Middleware
-# ------------------------------------------------
+# -----------------------------
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -46,16 +45,14 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-
-# ------------------------------------------------
+# -----------------------------
 # 🔵 ROOT URLs
-# ------------------------------------------------
+# -----------------------------
 ROOT_URLCONF = 'ha.urls'
 
-
-# ------------------------------------------------
+# -----------------------------
 # 🔵 Templates
-# ------------------------------------------------
+# -----------------------------
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -73,31 +70,38 @@ TEMPLATES = [
     },
 ]
 
-
-# ------------------------------------------------
+# -----------------------------
 # 🔵 WSGI
-# ------------------------------------------------
+# -----------------------------
 WSGI_APPLICATION = 'ha.wsgi.application'
 
-
-# ------------------------------------------------
-# 🔵 قاعدة البيانات — PostgreSQL عبر env
-# ------------------------------------------------
-DATABASES = {
-    'default': {
-        'ENGINE': os.getenv("DB_ENGINE"),
-        'NAME': os.getenv("DB_NAME"),
-        'USER': os.getenv("DB_USER"),
-        'PASSWORD': os.getenv("DB_PASSWORD"),
-        'HOST': os.getenv("DB_HOST"),
-        'PORT': os.getenv("DB_PORT"),
+# -----------------------------
+# 🔵 قاعدة البيانات — SQLite للتطوير و PostgreSQL للإنتاج
+# -----------------------------
+if DEBUG:
+    # 🟦 تطوير — SQLite
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / "db.sqlite3",
+        }
     }
-}
+else:
+    # 🟩 إنتاج — PostgreSQL (Render)
+    DATABASES = {
+        'default': {
+            'ENGINE': os.getenv("DB_ENGINE", "django.db.backends.postgresql"),
+            'NAME': os.getenv("DB_NAME"),
+            'USER': os.getenv("DB_USER"),
+            'PASSWORD': os.getenv("DB_PASSWORD"),
+            'HOST': os.getenv("DB_HOST"),
+            'PORT': os.getenv("DB_PORT", "5432"),
+        }
+    }
 
-
-# ------------------------------------------------
+# -----------------------------
 # 🔵 التحقق من كلمات المرور
-# ------------------------------------------------
+# -----------------------------
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -105,31 +109,26 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-
-# ------------------------------------------------
+# -----------------------------
 # 🔵 اللغة والمنطقة الزمنية
-# ------------------------------------------------
+# -----------------------------
 LANGUAGE_CODE = 'ar'
 TIME_ZONE = 'Asia/Riyadh'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-
-# ------------------------------------------------
-# 🔵 الملفات الثابتة Static Files (متوافق مع Render)
-# ------------------------------------------------
+# -----------------------------
+# 🔵 الملفات الثابتة Static Files
+# -----------------------------
 STATIC_URL = '/static/'
-
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
-
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-
-# ------------------------------------------------
+# -----------------------------
 # 🔵 ملفات الميديا Media Files
-# ------------------------------------------------
+# -----------------------------
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / "media"
